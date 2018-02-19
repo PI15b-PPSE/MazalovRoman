@@ -22,6 +22,11 @@ export default {
         { text: 'Rare coin-it, inc.' }
       ]
     }
+  },
+  mounted () {
+    var audio = new Audio(require('../assets/sounds/bdd_menu_intro.mp3'))
+    audio.loop = true
+    audio.play()
   }
 }
 </script>
