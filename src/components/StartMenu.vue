@@ -1,38 +1,44 @@
 <template>
   <div class="menu">
-    <h2>{{ ultimateTeam }}</h2>
-    <div class="menuContent">
-    <h3>{{ copyright }}</h3>
-      <p v-for="item in menuContent" v-bind:key="item.id">
-        {{ item.text }}
-      </p>
-    </div>
+    <component v-bind:is="currentPage"></component>
   </div>
 </template>
 
 <script>
+import StartMenuPage1 from './StartMenuPage1'
+import StartMenuPage2 from './StartMenuPage2'
+
 export default {
   name: 'StartMenu',
   data () {
     return {
-      ultimateTeam: '- the ultimate team -',
-      copyright: '\u00A92018 fuxy',
-      menuContent: [
-        { text: 'Licensed to tradewest by' },
-        { text: 'Rare coin-it, inc.' }
-      ]
+      currentPage: 'StartMenuPage1'
+    }
+  },
+  methods: {
+    nextPage (e) {
+      if (e.keyCode === 13) {
+        this.currentPage = 'StartMenuPage2'
+      }
     }
   },
   mounted () {
     var audio = new Audio(require('../assets/sounds/bdd_menu_intro.mp3'))
     audio.loop = true
     audio.play()
+  },
+  created () {
+    window.addEventListener('keypress', this.nextPage)
+  },
+  components: {
+    StartMenuPage1,
+    StartMenuPage2
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 h1, h2 {
   font-weight: normal;
 }
@@ -62,10 +68,5 @@ h1, h2 {
   color: #E5F499;
   text-transform: uppercase;
   font-size: 20px;
-}
-
-.menuContent {
-  position: relative;
-  top: 35%;
 }
 </style>
