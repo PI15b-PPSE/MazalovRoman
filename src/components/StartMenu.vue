@@ -3,7 +3,7 @@
     <h2>{{ ultimateTeam }}</h2>
     <div class="menuContent">
     <h3>{{ copyright }}</h3>
-      <p v-for="item in menuContent">
+      <p v-for="item in menuContent" v-bind:key="item.id">
         {{ item.text }}
       </p>
     </div>
@@ -46,7 +46,7 @@ h1, h2 {
   word-spacing: 8px;
   color: #984231;
   text-transform: uppercase;
-  font-size: 28px;
+  font-size: 22px;
 }
 
 .menu h3 {
