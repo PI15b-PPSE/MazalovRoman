@@ -62,6 +62,31 @@ h1, h2 {
   font-size: 20px;
 }
 
+.menu ul {
+  position: relative;
+  list-style-type: none;
+  padding: 0;
+  color: #E5F499;
+  text-transform: uppercase;
+  font-size: 20px;
+}
+
+.menu li::before {
+  display: block;
+  float: left;
+  width: 35px;
+  height: 25px;
+  line-height: 25px;
+  content: "• ";
+  color: yellow;
+  font-size: 80px;
+}
+
+.menu li{
+  display: inline-block;
+  line-height: 30px;
+}
+
 .menu p {
   margin: 0;
   word-spacing: 8px;
