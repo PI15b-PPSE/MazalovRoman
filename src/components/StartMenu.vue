@@ -22,10 +22,20 @@ export default {
       }
     },
     getNextPage: (function () {
+<<<<<<< HEAD
       var queue = ['StartMenuPage1', 'StartMenuPage2', 'StartMenuPage3']
 
       return function () {
         return queue.shift()
+=======
+      var pages = ['StartMenuPage1', 'StartMenuPage2', 'StartMenuPage3']
+      var i = 0
+
+      return function () {
+        if (i < pages.length) {
+          return pages[i++]
+        }
+>>>>>>> lab4
       }
     })()
   },
