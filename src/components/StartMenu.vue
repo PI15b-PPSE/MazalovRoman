@@ -18,9 +18,19 @@ export default {
   methods: {
     nextPage (e) {
       if (e.keyCode === 13) {
-        this.currentPage = 'StartMenuPage2'
+        this.currentPage = this.getNextPage()
       }
-    }
+    },
+    getNextPage: (function () {
+      var pages = ['StartMenuPage1', 'StartMenuPage2', 'StartMenuPage3']
+      var i = 0
+
+      return function () {
+        if (i < pages.length) {
+          return pages[i++]
+        }
+      }
+    })()
   },
   mounted () {
     var audio = new Audio(require('../assets/sounds/bdd_menu_intro.mp3'))
