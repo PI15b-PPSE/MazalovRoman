@@ -5,11 +5,11 @@ import StartMenu from '@/components/StartMenu'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'StartMenu',
-      component: StartMenu
-    }
-  ]
+    routes: [
+        {
+            path: '/',
+            name: 'StartMenu',
+            component: StartMenu
+        }
+    ]
 })
