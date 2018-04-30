@@ -1,20 +1,19 @@
 <template>
-    <div class="menu">
-        <component v-bind:is="currentPage"></component>
-    </div>
+  <component v-bind:is="currentPage"></component>
 </template>
 
 <script>
-import StartMenuPage1 from './StartMenuPage1'
-import StartMenuPage2 from './StartMenuPage2'
-
+import StartMenuPage1 from '../startmenu/StartMenuPage1.vue'
+import StartMenuPage2 from '../startmenu/StartMenuPage2.vue'
+import StartMenuPage3 from '../startmenu/StartMenuPage3.vue'
+import Game from '../game/Game.vue'
 
 /**
- * Компонент StartMenu
+ * Компонент Home
  *
- * Компонент стартового меню приложения. В шаблон компонента добавлен элемент
+ * Главный компонент приложения. В шаблон компонента добавлен элемент
  * component, который связан со свойством currentPage. Это позволяет изменять
- * отображаемые компоненты страниц стартового меню.
+ * отображаемые компоненты приложения.
  *
  * @author      Роман Мазалов
  * @version     1.0.0
@@ -25,11 +24,11 @@ export default {
     /**
      * Имя компонента.
      *
-     * Имя компонента стартового меню. Используется имя StartMenu.
+     * Имя компонента стартового меню. Используется имя Home.
      *
      * @var     string name
      */
-    name: 'StartMenu',
+    name: 'home',
 
     /**
      * Функция данных
@@ -62,7 +61,13 @@ export default {
          */
         nextPage (e) {
             if (e.keyCode === 13) {
-                this.currentPage = this.getNextPage()
+                var page = this.getNextPage()
+
+                if (page !== undefined) {
+                    this.currentPage = page
+                } else {
+                    this.currentPage = 'game'
+                }
             }
         },
 
@@ -90,7 +95,7 @@ export default {
      * проигрывает файл bdd_menu_intro.mp3 в стартовом меню.
      */
     mounted () {
-        var audio = new Audio(require('../assets/sounds/bdd_menu_intro.mp3'))
+        var audio = new Audio(require('../../../assets/sounds/bdd_menu_intro.mp3'))
         audio.loop = true
         audio.play()
     },
@@ -114,7 +119,9 @@ export default {
      */
     components: {
         StartMenuPage1,
-        StartMenuPage2
+        StartMenuPage2,
+        StartMenuPage3,
+        Game
     }
 }
 </script>
@@ -175,5 +182,10 @@ h1, h2 {
     color: #E5F499;
     text-transform: uppercase;
     font-size: 20px;
+}
+
+#logo img {
+    width: 600px;
+    height: auto;
 }
 </style>

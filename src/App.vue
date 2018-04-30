@@ -1,10 +1,7 @@
 <template>
-    <div id="app">
-        <div id="logo">
-            <img src="./assets/images/bdd_logo.gif">
-        </div>
-        <router-view/>
-    </div>
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -34,12 +31,12 @@ export default {
 <style>
 @font-face{
     font-family: 'NintendoNES';
-    src: url('assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.eot'); /* IE9 */
-    src: url('assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-8 */
-    url('assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.woff2') format('woff2'), /* Современные браузеры */
-    url('assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.woff') format('woff'),
-    url('assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.ttf') format('truetype'), /* Safari, Android, IOS */
-    url('assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.svg#webfont') format('svg'); /* Устаревший IOS */
+    src: url('/assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.eot'); /* IE9 */
+    src: url('/assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-8 */
+    url('/assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.woff2') format('woff2'), /* Современные браузеры */
+    url('/assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.woff') format('woff'),
+    url('/assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.ttf') format('truetype'), /* Safari, Android, IOS */
+    url('/assets/fonts/nintendo-nes-webfont/nintendo-nes-webfont.svg#webfont') format('svg'); /* Устаревший IOS */
 }
 
 body {
@@ -47,11 +44,6 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
-}
-
-#logo img {
-    width: 600px;
-    height: auto;
 }
 
 #app {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import StartMenu from '@/components/StartMenu'
+import Home from '../components/home/Home.vue'
 
 Vue.use(Router)
 
@@ -35,7 +35,7 @@ export default new Router({
              *
              * @var     string name
              */
-            name: 'StartMenu',
+            name: 'Home',
             /**
              * Компонент
              *
@@ -44,7 +44,7 @@ export default new Router({
              *
              * @var     object component
              */
-            component: StartMenu
-        }
-    ]
+            component: Home,
+        },
+    ],
 })

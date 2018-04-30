@@ -1,5 +1,8 @@
 <template>
-    <div class='pageContent'>
+    <div class='menu'>
+        <div id="logo">
+            <img src="/assets/images/bdd_logo.gif">
+        </div>
         <h2>{{ ultimateTeam }}</h2>
         <div class="menuContent">
             <h3>{{ copyright }}</h3>
@@ -31,7 +34,7 @@ export default {
      *
      * @var     string name
      */
-    name: 'StartMenuPage1',
+    name: 'startmenupage1',
 
     /**
      * Функция данных
@@ -80,6 +83,6 @@ export default {
 
 .menuContent {
     position: relative;
-    top: 35%;
+    top: 10%;
 }
 </style>
