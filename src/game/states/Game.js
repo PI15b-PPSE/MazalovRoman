@@ -34,16 +34,7 @@ export default class extends Phaser.State {
         this.ground.height = this.game.world.height - (0.82 * this.game.world.height)
         this.ground.width = this.game.world.width
         this.ground.body.immovable = true
-
-        this.player = new Player({
-            game: this.game,
-            x: 0,
-            y: 0,
-            asset: 'battletoads',
-            scale: this.scaleFactor,
-            ground: this.ground,
-        })
-
+        this.ground.body.allowGravity = false
 
         this.floor = this.game.add.sprite(0, 0.68 * this.game.world.height, 'battletoads', 'stage2/floor/0')
         this.floor.scale.setTo(this.scaleFactor)
@@ -56,9 +47,22 @@ export default class extends Phaser.State {
         )
         // floor.animations.play('moving')
         // this.background.autoScroll(-80, 0)
+        const playerShadow = this.game.add.sprite(0, 0.73 * this.game.world.height, 'battletoads', 'shadow/big')
+        playerShadow.scale.setTo(this.scaleFactor)
+        this.game.physics.enable(playerShadow)
+        this.player = new Player({
+            game: this.game,
+            x: 100,
+            y: 0.4 * this.game.world.height,
+            asset: 'battletoads',
+            scale: this.scaleFactor,
+            ground: this.ground,
+            shadow: playerShadow,
+            character: this.game.character,
+        })
         this.game.add.existing(this.player)
 
-        this.car = this.game.add.sprite(this.game.world.width / 2, 0.65 * this.game.world.height, 'battletoads', 'stage2/enemies/car')
+        this.car = this.game.add.sprite(this.game.world.width / 2, 0.65 * this.game.world.height, 'battletoads', 'car')
         this.game.physics.enable(this.car)
         this.car.body.immovable = true
         this.car.scale.setTo(this.scaleFactor)
@@ -67,11 +71,11 @@ export default class extends Phaser.State {
         this.spawnTimer.loop(1000, this.spawn, this)
         this.skipIterations = 4
 
-        this.lootSprite = this.game.add.sprite(0, 0.67 * this.game.world.height, 'test', 'stage2/loot')
+        this.lootSprite = this.game.add.sprite(0, 0.73 * this.game.world.height, 'battletoads', 'loot')
         this.lootSprite.scale.setTo(this.scaleFactor)
         this.game.physics.enable(this.lootSprite)
         // this.lootSprite.visible = false
-        this.lootSprite.body.setSize(10, 10, 10, 20)
+        this.lootSprite.body.setSize(10, 10, 0, 0)
         this.lootSprite.renderable = false
 
         this.bigObstacle = this.game.add.sprite(0, 0.67 * this.game.world.height, 'battletoads', 'stage2/enemies/obstacles/big/normal')
@@ -97,21 +101,26 @@ export default class extends Phaser.State {
         this.smallObstacles.visible = false
 
         this.lootCounter = 9
+        this.isLooted = false
         this.bigObstacleCounter = 4
         this.smallObstacleCounter = 2
         this.waveCount = 3
+        this.isObstaclesSpawned = false
+
+        this.createScoreLabel()
     }
 
     update() {
         // this.background.tilePosition.x -= 1
         this.game.physics.arcade.collide(this.player, this.ground)
+        this.game.physics.arcade.collide(this.ground, this.player.shadow)
         this.game.physics.arcade.collide(this.player, this.car, this.carOverlap, null, this)
         this.game.physics.arcade.overlap(this.player, this.lootSprite, this.lootOverlap, null, this)
-        this.game.physics.arcade.collide(
+        this.game.physics.arcade.overlap(
             this.player, this.bigObstacle,
             this.obstacleOverlap, null, this,
         )
-        this.game.physics.arcade.collide(
+        this.game.physics.arcade.overlap(
             this.player, this.smallObstacles,
             this.obstacleOverlap, null, this,
         )
@@ -143,11 +152,18 @@ export default class extends Phaser.State {
     }
 
     obstacleOverlap() {
-        this.game.gameOver()
+        if (this.isObstaclesSpawned) {
+            this.player.crush()
+            this.player.carfallAnimation.onComplete.add(this.game.gameOver, this)
+        }
     }
 
     lootOverlap() {
-        this.lootSprite.renderable = false
+        if (!this.isLooted) {
+            this.lootSprite.renderable = false
+            this.createScoreAnimation(this.lootSprite.x, this.lootSprite.y, 2000)
+            this.isLooted = true
+        }
     }
 
     carOverlap() {
@@ -163,18 +179,20 @@ export default class extends Phaser.State {
             if (this.waveCount > 0) {
                 if (this.lootCounter > 0) {
                     if (this.lootSprite.x <= 0) {
-                        const y = Math.random() < 0.5 ? 0.67 * this.game.world.height :
-                            0.56 * this.game.world.height
+                        const y = Math.random() < 0.5 ? 0.73 * this.game.world.height :
+                            0.64 * this.game.world.height
                         this.lootSprite.x = this.game.world.width - 50
                         this.lootSprite.y = y
                         this.lootSprite.body.velocity.x = -500
                         this.lootSprite.renderable = true
                         this.lootCounter -= 1
+                        this.isLooted = false
                     }
                     return
                 }
 
                 if (this.bigObstacleCounter > 0) {
+                    this.isObstaclesSpawned = true
                     if (this.bigObstacle.x <= 0) {
                         const y = Math.random() < 0.5 ? 0.67 * this.game.world.height :
                             0.56 * this.game.world.height
@@ -188,12 +206,13 @@ export default class extends Phaser.State {
                 }
 
                 if (this.smallObstacleCounter > 0) {
+                    this.isObstaclesSpawned = true
                     if (this.lastSmallObstacle.x <= 0) {
                         let offset = 0
                         this.smallObstacles.forEach(function (item) {
                             item.x = this.game.world.width - 50 + offset
                             item.body.velocity.x = -500
-                            offset += 10
+                            offset += 5
                         }, this)
                         this.smallObstacles.visible = true
                         this.smallObstacleCounter -= 1
@@ -211,8 +230,9 @@ export default class extends Phaser.State {
                         this.skipIterations = 4
                     }
                 }
-            } else {
-                this.game.playerWon()
+            } else if (!this.player.isPlayerFinished) {
+                this.player.finish()
+                this.player.omgAnimation.onComplete.add(this.game.playerWon, this)
             }
         } else {
             this.skipIterations -= 1
@@ -222,13 +242,33 @@ export default class extends Phaser.State {
     render() {
         if (__DEV__) {
             this.game.debug.spriteInfo(this.lootSprite, 32, 32)
-            //this.game.debug.body(this.player)
+            // this.game.debug.body(this.player)
             this.game.debug.body(this.lootSprite)
             this.game.debug.body(this.bigObstacle)
+            this.game.debug.body(this.player.shadow)
+            // this.game.debug.body(this.ground)
 
             this.smallObstacles.forEach(function (item) {
                 this.game.debug.body(item)
             }, this)
         }
+    }
+
+    createScoreLabel() {
+        const scoreFont = '28px NintendoNES'
+        this.scoreLabel = this.game.add.text(10, 10, '0', { font: scoreFont, fill: '#ffffff', stroke: '#000000', strokeThickness: 6 })
+        this.scoreLabel.align = 'center'
+    }
+
+    createScoreAnimation(x, y, score) {
+        const scoreFont = '18px NintendoNES'
+        const scoreAnimation = this.game.add.text(x + 10, y - 10, score.toString(), { font: scoreFont, fill: '#ffffff' })
+        scoreAnimation.align = 'center'
+
+        this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
+            scoreAnimation.destroy()
+            this.player.score += score
+            this.scoreLabel.text = this.player.score.toString()
+        }, this)
     }
 }

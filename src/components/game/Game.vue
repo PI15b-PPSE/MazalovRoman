@@ -21,7 +21,8 @@ export default {
         }
     },
     mounted () {
-        window.game = new Game(this.gameOver, this.playerWon)
+        const character = this.$parent.selectedCharacter >= 3 ? 'billy' : 'rash'
+        window.game = new Game(this.gameOver, this.playerWon, character)
     },
     destroyed () {
         window.game.destroy()

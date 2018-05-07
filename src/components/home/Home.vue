@@ -43,7 +43,8 @@ export default {
     data () {
         return {
             currentPage: 'StartMenuPage1',
-            queue: ['StartMenuPage1', 'StartMenuPage2', 'StartMenuPage3']
+            queue: ['StartMenuPage1', 'StartMenuPage2', 'StartMenuPage3'],
+            selectedCharacter: 0
         }
     },
 
@@ -73,9 +74,8 @@ export default {
                     if (page !== undefined) {
                         this.currentPage = page
                     } else {
+                        this.selectedCharacter = this.$children[0].selectedCharacter
                         this.currentPage = 'game'
-                        console.log(this.$children[0])
-                        this.$children[0].recreateGame()
                     }
                 }
             }
