@@ -6,6 +6,8 @@
 import StartMenuPage1 from '../startmenu/StartMenuPage1.vue'
 import StartMenuPage2 from '../startmenu/StartMenuPage2.vue'
 import StartMenuPage3 from '../startmenu/StartMenuPage3.vue'
+import GameOver from '../startmenu/GameOver.vue'
+import PlayerWon from '../startmenu/PlayerWon.vue'
 import Game from '../game/Game.vue'
 
 /**
@@ -40,7 +42,8 @@ export default {
      */
     data () {
         return {
-            currentPage: 'StartMenuPage1'
+            currentPage: 'StartMenuPage1',
+            queue: ['StartMenuPage1', 'StartMenuPage2', 'StartMenuPage3']
         }
     },
 
@@ -52,6 +55,9 @@ export default {
      * @var     object methods
      */
     methods: {
+        switchPage (page) {
+            this.currentPage = page
+        },
         /**
          * Обработчик нажатия клавиш
          *
@@ -60,13 +66,17 @@ export default {
          * {@link getNextPage}.
          */
         nextPage (e) {
-            if (e.keyCode === 13) {
-                var page = this.getNextPage()
+            if (this.currentPage !== 'GameOver' && this.currentPage !== 'game') {
+                if (e.keyCode === 13) {
+                    var page = this.getNextPage()
 
-                if (page !== undefined) {
-                    this.currentPage = page
-                } else {
-                    this.currentPage = 'game'
+                    if (page !== undefined) {
+                        this.currentPage = page
+                    } else {
+                        this.currentPage = 'game'
+                        console.log(this.$children[0])
+                        this.$children[0].recreateGame()
+                    }
                 }
             }
         },
@@ -79,13 +89,12 @@ export default {
          *
          * @return      string      Возвращает имя компонента следующей страницы
          */
-        getNextPage: (function () {
-            var queue = ['StartMenuPage1', 'StartMenuPage2', 'StartMenuPage3']
-
-            return function () {
-                return queue.shift()
-            }
-        })()
+        getNextPage () {
+            return this.queue.shift()
+        },
+        resetPageQueue () {
+            this.queue = ['StartMenuPage1', 'StartMenuPage2', 'StartMenuPage3']
+        }
     },
 
     /**
@@ -109,6 +118,9 @@ export default {
     created () {
         window.addEventListener('keypress', this.nextPage)
     },
+    destroyed () {
+        window.removeEventListener('keypress', this.nextPage)
+    },
 
     /**
      * Компоненты
@@ -121,7 +133,9 @@ export default {
         StartMenuPage1,
         StartMenuPage2,
         StartMenuPage3,
-        Game
+        Game,
+        GameOver,
+        PlayerWon
     }
 }
 </script>

@@ -94,6 +94,9 @@ export default {
     },
     created () {
         window.addEventListener('keypress', this.selectCharacter)
+    },
+    destroyed () {
+        window.removeEventListener('keypress', this.selectCharacter)
     }
 }
 </script>

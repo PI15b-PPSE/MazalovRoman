@@ -7,10 +7,21 @@ import Game from '../../game'
 
 export default {
     name: 'game',
-    data () {},
-    methods: {},
-    created () {
-        window.game = new Game()
+    data () {
+        return {}
+    },
+    methods: {
+        gameOver() {
+            window.game.destroy()
+            this.$parent.switchPage('GameOver')
+        },
+        playerWon() {
+            window.game.destroy()
+            this.$parent.switchPage('PlayerWon')
+        }
+    },
+    mounted () {
+        window.game = new Game(this.gameOver, this.playerWon)
     },
     destroyed () {
         window.game.destroy()

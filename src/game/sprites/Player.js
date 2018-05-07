@@ -5,7 +5,8 @@ export default class extends Phaser.Sprite {
         game, x, y, asset, scale, ground,
     }) {
         super(game, x, y, asset)
-        this.frameName = 'rash/walk/0'
+        this.frameName = 'rash/stand'
+        // this.tint = 0xffff9f
         this.game.physics.enable(this)
         this.facing = 'right'
         this.dx = 250
@@ -16,7 +17,7 @@ export default class extends Phaser.Sprite {
         this.body.gravity.y = 1000
         this.animations.add(
             'running',
-            Phaser.Animation.generateFrameNames('rash/walk/', 0, 7),
+            Phaser.Animation.generateFrameNames('rash/run/', 0, 7),
             6,
             true,
         )
@@ -92,7 +93,7 @@ export default class extends Phaser.Sprite {
     moveDown() {
         const isRunner = this.state === 'runner'
         // this.game.physics.arcade.moveToXY(this, this.x, this.y + this.dy, this.dx)
-        if (this.ground.y < (isRunner ? 0.81 : 0.84) * this.game.world.height) {
+        if (this.ground.y < (isRunner ? 0.81 : 0.78) * this.game.world.height) {
             this.ground.y += this.dy
         }
         this.facing = 'down'
@@ -124,14 +125,20 @@ export default class extends Phaser.Sprite {
         }
     }
 
+    isOnCar() {
+        return this.state === 'driver'
+    }
+
     onCar() {
         this.frameName = 'rash/car/0'
         this.state = 'driver'
+        this.dj = -600
     }
 
     walk() {
         this.frameName = 'rash/walk/0'
         this.state = 'runner'
+        this.dj = -400
     }
 
     stop() {
@@ -142,10 +149,8 @@ export default class extends Phaser.Sprite {
             this.animations.stop()
         }
 
-        if (this.facing === 'left' && this.state === 'runner') {
-            this.frameName = 'rash/walk/0'
-        } else if (this.state === 'runner') {
-            this.frameName = 'rash/walk/0'
+        if (this.state === 'runner') {
+            this.frameName = 'rash/stand'
         } else if (this.body.touching.down) {
             this.frameName = 'rash/car/0'
         }

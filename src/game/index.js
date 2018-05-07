@@ -8,7 +8,7 @@ import GameState from './states/Game'
 import config from './config'
 
 export default class Game extends Phaser.Game {
-    constructor() {
+    constructor(gameOver, playerWon) {
         const docElement = document.documentElement
         const width = docElement.clientWidth > config.gameWidth
             ? config.gameWidth
@@ -19,6 +19,8 @@ export default class Game extends Phaser.Game {
 
         super(width, height, Phaser.CANVAS, 'content', null)
 
+        this.gameOver = gameOver
+        this.playerWon = playerWon
         this.state.add('Boot', BootState, false)
         this.state.add('Game', GameState, false)
         this.state.start('Boot')
