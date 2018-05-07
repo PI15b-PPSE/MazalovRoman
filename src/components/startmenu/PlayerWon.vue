@@ -47,10 +47,16 @@ export default {
         tryAgain() {
             this.$parent.resetPageQueue()
             this.$parent.switchPage('StartMenuPage1')
+            this.audio.pause()
         }
     },
     created () {
         window.addEventListener('keypress', this.tryAgain)
+    },
+    mounted () {
+        this.audio = new Audio(require('../../../assets/sounds/level_complete.mp3'))
+        this.audio.loop = true
+        this.audio.play()
     },
     destroyed () {
         window.removeEventListener('keypress', this.tryAgain)

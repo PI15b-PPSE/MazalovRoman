@@ -53,7 +53,13 @@ export default {
         },
         tryAgain() {
             this.$parent.switchPage('StartMenuPage3')
+            this.audio.pause()
         }
+    },
+    mounted () {
+        this.audio = new Audio(require('../../../assets/sounds/game_over.mp3'))
+        this.audio.loop = true
+        this.audio.play()
     },
     created () {
         window.addEventListener('keypress', this.tryAgain)

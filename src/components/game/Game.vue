@@ -14,15 +14,20 @@ export default {
         gameOver() {
             window.game.destroy()
             this.$parent.switchPage('GameOver')
+            this.audio.pause()
         },
         playerWon() {
             window.game.destroy()
             this.$parent.switchPage('PlayerWon')
+            this.audio.pause()
         }
     },
     mounted () {
         const character = this.$parent.selectedCharacter >= 3 ? 'billy' : 'rash'
         window.game = new Game(this.gameOver, this.playerWon, character)
+        this.audio = new Audio(require('../../../assets/sounds/level2.mp3'))
+        this.audio.loop = true
+        this.audio.play()
     },
     destroyed () {
         window.game.destroy()

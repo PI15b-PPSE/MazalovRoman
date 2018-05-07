@@ -12,6 +12,8 @@ export default class extends Phaser.State {
     }
 
     create() {
+        this.coinSound = this.game.sound.add('coin')
+        this.coinSound.volume = 0.4
         // sprite hook determining it's width
         const sprite = new Phaser.Sprite(
             this.game, 0, 0,
@@ -106,6 +108,7 @@ export default class extends Phaser.State {
         this.smallObstacleCounter = 2
         this.waveCount = 3
         this.isObstaclesSpawned = false
+        this.waveSpeed = 500
 
         this.createScoreLabel()
     }
@@ -163,6 +166,7 @@ export default class extends Phaser.State {
             this.lootSprite.renderable = false
             this.createScoreAnimation(this.lootSprite.x, this.lootSprite.y, 2000)
             this.isLooted = true
+            this.coinSound.play()
         }
     }
 
@@ -183,7 +187,7 @@ export default class extends Phaser.State {
                             0.64 * this.game.world.height
                         this.lootSprite.x = this.game.world.width - 50
                         this.lootSprite.y = y
-                        this.lootSprite.body.velocity.x = -500
+                        this.lootSprite.body.velocity.x = -this.waveSpeed
                         this.lootSprite.renderable = true
                         this.lootCounter -= 1
                         this.isLooted = false
@@ -198,7 +202,7 @@ export default class extends Phaser.State {
                             0.56 * this.game.world.height
                         this.bigObstacle.x = this.game.world.width - 50
                         this.bigObstacle.y = y
-                        this.bigObstacle.body.velocity.x = -500
+                        this.bigObstacle.body.velocity.x = -this.waveSpeed
                         this.bigObstacle.renderable = true
                         this.bigObstacleCounter -= 1
                     }
@@ -211,7 +215,7 @@ export default class extends Phaser.State {
                         let offset = 0
                         this.smallObstacles.forEach(function (item) {
                             item.x = this.game.world.width - 50 + offset
-                            item.body.velocity.x = -500
+                            item.body.velocity.x = -this.waveSpeed
                             offset += 5
                         }, this)
                         this.smallObstacles.visible = true
@@ -219,6 +223,7 @@ export default class extends Phaser.State {
                     }
                 } else {
                     this.waveCount -= 1
+                    this.waveSpeed += 500
 
                     if (this.waveCount > 1) {
                         this.lootCounter = 9
@@ -241,16 +246,16 @@ export default class extends Phaser.State {
 
     render() {
         if (__DEV__) {
-            this.game.debug.spriteInfo(this.lootSprite, 32, 32)
-            // this.game.debug.body(this.player)
+            /* this.game.debug.spriteInfo(this.lootSprite, 32, 32)
+            this.game.debug.body(this.player)
             this.game.debug.body(this.lootSprite)
             this.game.debug.body(this.bigObstacle)
             this.game.debug.body(this.player.shadow)
-            // this.game.debug.body(this.ground)
+            this.game.debug.body(this.ground)
 
             this.smallObstacles.forEach(function (item) {
                 this.game.debug.body(item)
-            }, this)
+            }, this) */
         }
     }
 

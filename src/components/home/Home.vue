@@ -76,6 +76,8 @@ export default {
                     } else {
                         this.selectedCharacter = this.$children[0].selectedCharacter
                         this.currentPage = 'game'
+                        this.audio.pause()
+                        this.audio.currentTime = 0
                     }
                 }
             }
@@ -104,9 +106,9 @@ export default {
      * проигрывает файл bdd_menu_intro.mp3 в стартовом меню.
      */
     mounted () {
-        var audio = new Audio(require('../../../assets/sounds/bdd_menu_intro.mp3'))
-        audio.loop = true
-        audio.play()
+        this.audio = new Audio(require('../../../assets/sounds/bdd_menu_intro.mp3'))
+        this.audio.loop = true
+        this.audio.play()
     },
 
     /**
