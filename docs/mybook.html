@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Документация к проекту "Battletoads and Double Dragon Remake Web Application"</title><meta name="generator" content="DocBook XSL-NS Stylesheets V1.79.1"/></head><body><div class="book"><div class="titlepage"><div><div><h1 class="title"><a id="simple_book"/>Документация к проекту "Battletoads and Double Dragon Remake Web Application"</h1></div><div><div class="author"><h3 class="author"><span class="firstname">Роман</span> <span class="surname">Мазалов</span></h3></div></div><div><p class="copyright">Copyright © 2018 Мазалов Роман</p></div></div><hr/></div><div class="toc"><p><strong>Table of Contents</strong></p><dl class="toc"><dt><span class="preface"><a href="#idm140522919347552"/></span></dt><dt><span class="chapter"><a href="#chapter_1">1. Краткое описание приложения</a></span></dt><dt><span class="chapter"><a href="#chapter_2">2. Горячие клавиши</a></span></dt><dt><span class="chapter"><a href="#chapter_3">3. Сценарии игры</a></span></dt><dd><dl><dt><span class="section"><a href="#idm140522919278848">Столкновение с объектом</a></span></dt><dt><span class="section"><a href="#idm140522919273152">Окончание игры с победой</a></span></dt><dt><span class="section"><a href="#idm140522919270080">Выбор другого игрового персонажа</a></span></dt></dl></dd><dt><span class="chapter"><a href="#chapter_4">4. Примеры работы программы</a></span></dt></dl></div><div class="list-of-figures"><p><strong>List of Figures</strong></p><dl><dt>4.1. <a href="#idm140522919264944">Один из вариантов выбора персонажа</a></dt><dt>4.2. <a href="#idm140522919262112">Ещё один из вариантов выбора персонажа</a></dt><dt>4.3. <a href="#idm140522919259520">Подбор лута</a></dt><dt>4.4. <a href="#idm140522919257008">Один из вариантов поражения (1 часть)</a></dt><dt>4.5. <a href="#idm140522919254416">Один из вариантов поражения (2 часть)</a></dt></dl></div><div class="list-of-examples"><p><strong>List of Examples</strong></p><dl><dt>3.1. <a href="#idm140522919277648">Столкновение с препятствием</a></dt><dt>3.2. <a href="#idm140522919274960">Столкновение с лутом</a></dt><dt>3.3. <a href="#idm140522919271984">Победа игрока</a></dt><dt>3.4. <a href="#idm140522919268864">Выбор игрового персонажа</a></dt></dl></div><div class="preface"><div class="titlepage"/><div class="address"><p>dellight55@gmail.com</p></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="chapter_1"/>Chapter 1. Краткое описание приложения</h1></div></div></div><p>Ремейк видео-игры <span class="bold"><strong>Battle And Double Dragon</strong></span> для NES.</p><p><span class="bold"><strong>Battletoads &amp; Double Dragon: The Ultimate Team</strong></span> — видеоигра в жанре Beat 'em up, разработанная компанией Rare и изданная Tradewest в 1993 году. Изначально игра была выпущена для игровой консоли NES, впоследствии вышли версии для SNES, Sega Mega Drive и Game Boy.</p><p>Ремейк имеет следующие особенности:</p><div class="itemizedlist"><ul class="itemizedlist"><li class="listitem"><p><span class="bold"><strong>Максимальная схожесть:</strong></span> игра создана с максимальной приближенностью к версии игры на NES, используются атласы, звуки, музыкальное сопровождение оригинальной Battletoads And Double Dragon.</p></li><li class="listitem"><p><span class="bold"><strong>Доступность:</strong></span> ремейк представляет собой Web-приложение, которое можно разместить на сервере для предоставления общего доступа.</p></li><li class="listitem"><p><span class="bold"><strong>Использование современных Web-технологий:</strong></span> ремейк использует технологии HTML5 и CSS3, фреймворк Vue.js для динамического обновления структуры DOM, код приложения на JavaScript написан с использованием стандарт ES5.</p></li></ul></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="chapter_2"/>Chapter 2. Горячие клавиши</h1></div></div></div><p>Клавиша "Стрелка вправо" - движение вперёд</p><p>Клавиша "Стрелка влево" - движение вназад</p><p>Клавиша "Стрелка вверх" - движение налево</p><p>Клавиша "Стрелка вниз" - движение направо</p><p>Клавиша "Пробел" - прыжок</p></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="chapter_3"/>Chapter 3. Сценарии игры</h1></div></div></div><div class="toc"><p><strong>Table of Contents</strong></p><dl class="toc"><dt><span class="section"><a href="#idm140522919278848">Столкновение с объектом</a></span></dt><dt><span class="section"><a href="#idm140522919273152">Окончание игры с победой</a></span></dt><dt><span class="section"><a href="#idm140522919270080">Выбор другого игрового персонажа</a></span></dt></dl></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm140522919278848"/>Столкновение с объектом</h2></div></div></div><p>Игрок сталкивается с одним из препятствий по пути.</p><div class="example"><a id="idm140522919277648"/><p class="title"><strong>Example 3.1. Столкновение с препятствием</strong></p><div class="example-contents"><pre class="programlisting">
+                    
+        javascript
+        // obstacleOverlap()
+
+        if (this.isObstaclesSpawned) {
+            this.player.crush()
+            this.player.carfallAnimation.onComplete.add(this.game.gameOver, this)
+        }
+
+        // player.crush()
+
+        this.body.velocity.y = -100
+        this.body.velocity.x = -50
+        this.body.gravity.y = 50
+        this.animations.play('carfall', 6, false)
+        this.dx = 0
+        this.dy = 0
+        this.dj = 0
+        this.isPlayerCrushed = true
+            </pre></div></div><br class="example-break"/><p>Игрок столкнулся с лутом, при этом увеличивается счет игрока.</p><div class="example"><a id="idm140522919274960"/><p class="title"><strong>Example 3.2. Столкновение с лутом</strong></p><div class="example-contents"><pre class="programlisting">
+                    
+        javascript
+        // lootOverlap()
+        if (!this.isLooted) {
+            this.lootSprite.renderable = false
+            this.createScoreAnimation(this.lootSprite.x, this.lootSprite.y, 2000)
+            this.isLooted = true
+            this.coinSound.play()
+        }
+            </pre></div></div><br class="example-break"/></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm140522919273152"/>Окончание игры с победой</h2></div></div></div><p>Игрок прошел все волны препятствий.</p><div class="example"><a id="idm140522919271984"/><p class="title"><strong>Example 3.3. Победа игрока</strong></p><div class="example-contents"><pre class="programlisting">
+                    
+        javascript
+        // spawn()
+        ...
+            if (this.waveCount &gt; 0) {
+                ...
+            } else if (!this.player.isPlayerFinished) {
+                this.player.finish()
+                this.player.omgAnimation.onComplete.add(this.game.playerWon, this)
+            }
+        ...
+            </pre></div></div><br class="example-break"/></div><div class="section"><div class="titlepage"><div><div><h2 class="title"><a id="idm140522919270080"/>Выбор другого игрового персонажа</h2></div></div></div><p>Игрок другого игрового персонажа в стартовом меню.</p><div class="example"><a id="idm140522919268864"/><p class="title"><strong>Example 3.4. Выбор игрового персонажа</strong></p><div class="example-contents"><pre class="programlisting">
+                    
+        javascript
+        // StartMenuPage3.vue selectCharacter(e)
+        if (e.keyCode === 37) {
+            if (this.selectedCharacter &gt; 0) {
+                --this.selectedCharacter
+            }
+        }
+
+        if (e.keyCode === 39) {
+            if (this.selectedCharacter &lt; this.CHARACTERS_COUNT - 1) {
+                ++this.selectedCharacter
+            }
+        }
+
+        // Game.js create()
+        ..
+        this.player = new Player({
+            game: this.game,
+            x: 100,
+            y: 0.4 * this.game.world.height,
+            asset: 'battletoads',
+            scale: this.scaleFactor,
+            ground: this.ground,
+            shadow: playerShadow,
+            character: this.game.character,
+        })
+        ...
+            </pre></div></div><br class="example-break"/></div></div><div class="chapter"><div class="titlepage"><div><div><h1 class="title"><a id="chapter_4"/>Chapter 4. Примеры работы программы</h1></div></div></div><div class="figure"><a id="idm140522919264944"/><p class="title"><strong>Figure 4.1. Один из вариантов выбора персонажа</strong></p><div class="figure-contents"><div class="mediaobject"><img src="1.png" width="500" alt="Один из вариантов выбора персонажа"/></div></div></div><br class="figure-break"/><div class="figure"><a id="idm140522919262112"/><p class="title"><strong>Figure 4.2. Ещё один из вариантов выбора персонажа</strong></p><div class="figure-contents"><div class="mediaobject"><img src="2.png" width="500" alt="Ещё один из вариантов выбора персонажа"/></div></div></div><br class="figure-break"/><div class="figure"><a id="idm140522919259520"/><p class="title"><strong>Figure 4.3. Подбор лута</strong></p><div class="figure-contents"><div class="mediaobject"><img src="3.png" width="500" alt="Подбор лута"/></div></div></div><br class="figure-break"/><div class="figure"><a id="idm140522919257008"/><p class="title"><strong>Figure 4.4. Один из вариантов поражения (1 часть)</strong></p><div class="figure-contents"><div class="mediaobject"><img src="4.png" width="500" alt="Один из вариантов поражения (1 часть)"/></div></div></div><br class="figure-break"/><div class="figure"><a id="idm140522919254416"/><p class="title"><strong>Figure 4.5. Один из вариантов поражения (2 часть)</strong></p><div class="figure-contents"><div class="mediaobject"><img src="5.png" width="500" alt="Один из вариантов поражения (2 часть)"/></div></div></div><br class="figure-break"/></div></div></body></html>
